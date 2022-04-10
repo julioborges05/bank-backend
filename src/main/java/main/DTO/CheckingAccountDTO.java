@@ -2,22 +2,13 @@ package main.DTO;
 
 public class CheckingAccountDTO {
     private Integer id;
-    private Integer idAccountHolder;
-    private Integer idAgency;
+    private AccountHolderDTO accountHolderDTO;
+    private AgencyDTO agencyDTO;
     private Double limit;
     private Double balance;
     private String isActive;
 
     public CheckingAccountDTO() {
-    }
-
-    public CheckingAccountDTO(Integer id, Integer idAccountHolder, Integer idAgency, Double limit, Double balance, String isActive) {
-        this.id = id;
-        this.idAccountHolder = idAccountHolder;
-        this.idAgency = idAgency;
-        this.limit = limit;
-        this.balance = balance;
-        this.isActive = isActive;
     }
 
     public Integer getId() {
@@ -28,20 +19,20 @@ public class CheckingAccountDTO {
         this.id = id;
     }
 
-    public Integer getIdAccountHolder() {
-        return idAccountHolder;
+    public AccountHolderDTO getAccountHolderDTO() {
+        return accountHolderDTO;
     }
 
-    public void setIdAccountHolder(Integer idAccountHolder) {
-        this.idAccountHolder = idAccountHolder;
+    public void setAccountHolderDTO(AccountHolderDTO accountHolderDTO) {
+        this.accountHolderDTO = accountHolderDTO;
     }
 
-    public Integer getIdAgency() {
-        return idAgency;
+    public AgencyDTO getAgencyDTO() {
+        return agencyDTO;
     }
 
-    public void setIdAgency(Integer idAgency) {
-        this.idAgency = idAgency;
+    public void setAgencyDTO(AgencyDTO agencyDTO) {
+        this.agencyDTO = agencyDTO;
     }
 
     public Double getLimit() {
@@ -60,11 +51,11 @@ public class CheckingAccountDTO {
         this.balance = balance;
     }
 
-    public String getActive() {
+    public String getIsActive() {
         return isActive;
     }
 
-    public void setActive(String active) {
-        isActive = active;
+    public void setIsActive(String isActive) {
+        this.isActive = isActive;
     }
 }

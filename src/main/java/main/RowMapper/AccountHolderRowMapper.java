@@ -19,7 +19,7 @@ public class AccountHolderRowMapper implements RowMapper<AccountHolderDTO> {
         accountHolderDTO.setName(!ObjectUtils.isEmpty(
                 rs.getObject("name")) ? (String) rs.getObject("name") : null);
 
-        accountHolderDTO.setCPF(!ObjectUtils.isEmpty(
+        accountHolderDTO.setCpf(!ObjectUtils.isEmpty(
                 rs.getObject("cpf")) ? (String) rs.getObject("cpf") : null);
 
         accountHolderDTO.setBirthDay(!ObjectUtils.isEmpty(

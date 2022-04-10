@@ -5,16 +5,20 @@ import java.util.Date;
 public class AccountHolderDTO {
     private Integer id;
     private String name;
-    private String CPF;
+    private String cpf;
     private Date birthDay;
 
     public AccountHolderDTO() {
     }
 
-    public AccountHolderDTO(int id, String name, String CPF, Date birthDay) {
+    public AccountHolderDTO(Integer id) {
+        this.id = id;
+    }
+
+    public AccountHolderDTO(int id, String name, String cpf, Date birthDay) {
         this.id = id;
         this.name = name;
-        this.CPF = CPF;
+        this.cpf = cpf;
         this.birthDay = birthDay;
     }
 
@@ -34,12 +38,12 @@ public class AccountHolderDTO {
         this.name = name;
     }
 
-    public String getCPF() {
-        return CPF;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public Date getBirthDay() {

@@ -8,6 +8,10 @@ public class AgencyDTO {
     public AgencyDTO() {
     }
 
+    public AgencyDTO(Integer id) {
+        this.id = id;
+    }
+
     public AgencyDTO(Integer id, String name, String address) {
         this.id = id;
         this.name = name;

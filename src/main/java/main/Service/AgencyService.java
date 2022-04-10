@@ -15,4 +15,8 @@ public class AgencyService {
     public List<AgencyDTO> findAll() {
         return agencyDAO.findAll();
     }
+
+    public AgencyDTO findById(Integer id) {
+        return agencyDAO.findById(id);
+    }
 }
