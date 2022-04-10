@@ -50,4 +50,8 @@ public class CheckingAccountDAO {
     public int updateExistentCheckingAccountBalanceByCheckingAccountIdAndAgencyId(Integer checkingAccountId, Integer agencyId, Double balanceValue) {
         return jdbcTemplate.update("update public.checking_account  set balance = ? where id = ? and id_agency = ?", balanceValue, checkingAccountId, agencyId);
     }
+
+    public List<CheckingAccountDTO> findAllCheckingAccountsByAccountHolderId(Integer accountHolderId) {
+        return jdbcTemplate.query("select * from public.checking_account ca where ca.id_account_holder = ?", new CheckingAccountRowMapper(), accountHolderId);
+    }
 }

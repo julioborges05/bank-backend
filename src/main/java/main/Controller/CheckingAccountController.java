@@ -9,6 +9,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/checkingAccount")
@@ -94,6 +95,23 @@ public class CheckingAccountController {
                 return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
             return new ResponseEntity<>(checkingAccountDTO.getBalance(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<Map<String, List<CheckingAccountDTO>>> findDataByCpf(
+            @PathVariable String cpf) {
+
+        Map<String, List<CheckingAccountDTO>> informationMap;
+        try {
+            informationMap = checkingAccountService.findAllInformationByCpf(cpf);
+
+            if (ObjectUtils.isEmpty(informationMap))
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
+            return new ResponseEntity<>(informationMap, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

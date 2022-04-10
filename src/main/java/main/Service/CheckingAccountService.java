@@ -1,13 +1,16 @@
 package main.Service;
 
 import main.DAO.CheckingAccountDAO;
+import main.DTO.AccountHolderDTO;
 import main.DTO.AgencyDTO;
 import main.DTO.CheckingAccountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CheckingAccountService {
@@ -103,5 +106,22 @@ public class CheckingAccountService {
                 receiverAccount.getAgencyDTO().getId(), receiverAccount.getBalance() + value);
 
         return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(originAccount.getAgencyDTO().getId(), originAccount.getId());
+    }
+
+    public Map<String, List<CheckingAccountDTO>> findAllInformationByCpf(String cpf) {
+        Map<String, List<CheckingAccountDTO>> accountHolderMap = new HashMap<>();
+
+        AccountHolderDTO accountHolderDTO = accountHolderService.findByCpf(cpf);
+        if(ObjectUtils.isEmpty(accountHolderDTO)) return null;
+
+        List<CheckingAccountDTO> accountDTOS = checkingAccountDAO.findAllCheckingAccountsByAccountHolderId(accountHolderDTO.getId());
+
+        for(CheckingAccountDTO accountDTO : accountDTOS) {
+            accountDTO.setAccountHolderDTO(accountHolderDTO);
+        }
+
+        accountHolderMap.put(accountHolderDTO.getName(), accountDTOS);
+
+        return accountHolderMap;
     }
 }
