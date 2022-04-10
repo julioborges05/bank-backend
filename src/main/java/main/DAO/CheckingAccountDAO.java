@@ -36,4 +36,14 @@ public class CheckingAccountDAO {
             return null;
         }
     }
+
+    public CheckingAccountDTO findByAgencyIdAndCheckingAccountId(Integer agencyId, Integer checkingAccountId) {
+        try {
+            return jdbcTemplate.queryForObject("select * from public.checking_account ca " +
+                    " where ca.id_agency = ? and ca.id = ? ", new CheckingAccountRowMapper(), agencyId, checkingAccountId);
+        } catch (
+                EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }

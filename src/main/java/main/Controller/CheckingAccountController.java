@@ -28,16 +28,33 @@ public class CheckingAccountController {
             @RequestBody CheckingAccountDTO checkingAccountRequest) {
 
         CheckingAccountDTO checkingAccountDTO;
-
         try {
             checkingAccountDTO = checkingAccountService.createCheckingAccount(checkingAccountRequest);
 
-            if(ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO()))
+            if (ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO()))
                 return new ResponseEntity<>(checkingAccountDTO, HttpStatus.NOT_FOUND);
 
             return new ResponseEntity<>(checkingAccountDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(new CheckingAccountDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getBalance")
+    public ResponseEntity<Double> getBalance(
+            @RequestBody CheckingAccountDTO checkingAccountRequest) {
+
+        CheckingAccountDTO checkingAccountDTO;
+        try {
+            checkingAccountDTO = checkingAccountService.findByAgencyIdAndCheckingAccountId(checkingAccountRequest.getAgencyDTO().getId(),
+                    checkingAccountRequest.getId());
+
+            if (ObjectUtils.isEmpty(checkingAccountDTO) || ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO().getId()))
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
+            return new ResponseEntity<>(checkingAccountDTO.getBalance(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

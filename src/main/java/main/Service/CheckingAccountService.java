@@ -55,4 +55,8 @@ public class CheckingAccountService {
     private boolean checkingAccountAlreadyExists(CheckingAccountDTO checkingAccountDTO) {
         return !ObjectUtils.isEmpty(checkingAccountDAO.findByCheckingAccountParameters(checkingAccountDTO));
     }
+
+    public CheckingAccountDTO findByAgencyIdAndCheckingAccountId(Integer agencyId, Integer checkingAccountId) {
+        return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+    }
 }
