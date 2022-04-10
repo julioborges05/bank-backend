@@ -75,4 +75,33 @@ public class CheckingAccountService {
 
         return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
     }
+
+    public CheckingAccountDTO makeTransference(List<CheckingAccountDTO> accountList, Double value, Integer originId) {
+        if(accountList.size() != 2 || accountList.get(0).getId().equals(accountList.get(1).getId())) return null;
+
+        CheckingAccountDTO originAccount = null;
+        CheckingAccountDTO receiverAccount = null;
+
+        for(CheckingAccountDTO accountDTO : accountList) {
+            if(accountDTO.getId().equals(originId))
+                originAccount = checkingAccountDAO.findByAgencyIdAndCheckingAccountId(accountDTO.getAgencyDTO().getId(), accountDTO.getId());
+            else
+                receiverAccount = checkingAccountDAO.findByAgencyIdAndCheckingAccountId(accountDTO.getAgencyDTO().getId(), accountDTO.getId());
+        }
+
+        if(ObjectUtils.isEmpty(originAccount) || ObjectUtils.isEmpty(receiverAccount)) return null;
+
+        if(originAccount.getBalance() - value < originAccount.getLimit() * (-1)) {
+            originAccount.setBalance(originAccount.getBalance() - value);
+            return originAccount;
+        }
+
+        checkingAccountDAO.updateExistentCheckingAccountBalanceByCheckingAccountIdAndAgencyId(originAccount.getId(),
+                originAccount.getAgencyDTO().getId(), originAccount.getBalance() - value);
+
+        checkingAccountDAO.updateExistentCheckingAccountBalanceByCheckingAccountIdAndAgencyId(receiverAccount.getId(),
+                receiverAccount.getAgencyDTO().getId(), receiverAccount.getBalance() + value);
+
+        return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(originAccount.getAgencyDTO().getId(), originAccount.getId());
+    }
 }
