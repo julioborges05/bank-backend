@@ -46,4 +46,8 @@ public class CheckingAccountDAO {
             return null;
         }
     }
+
+    public int updateExistentCheckingAccountBalanceByCheckingAccountIdAndAgencyId(Integer checkingAccountId, Integer agencyId, Double balanceValue) {
+        return jdbcTemplate.update("update public.checking_account  set balance = ? where id = ? and id_agency = ?", balanceValue, checkingAccountId, agencyId);
+    }
 }

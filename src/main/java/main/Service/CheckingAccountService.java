@@ -59,4 +59,20 @@ public class CheckingAccountService {
     public CheckingAccountDTO findByAgencyIdAndCheckingAccountId(Integer agencyId, Integer checkingAccountId) {
         return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
     }
+
+    public CheckingAccountDTO makeWithdrawal(Integer agencyId, Integer checkingAccountId, Double withdrawalValue) {
+        CheckingAccountDTO databaseCheckingAccount = checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+
+        if(ObjectUtils.isEmpty(databaseCheckingAccount))
+            return null;
+
+        if(databaseCheckingAccount.getBalance() - withdrawalValue < databaseCheckingAccount.getLimit() * (-1)) {
+            databaseCheckingAccount.setBalance(databaseCheckingAccount.getBalance() - withdrawalValue);
+            return databaseCheckingAccount;
+        }
+
+        checkingAccountDAO.updateExistentCheckingAccountBalanceByCheckingAccountIdAndAgencyId(checkingAccountId, agencyId, databaseCheckingAccount.getBalance() - withdrawalValue);
+
+        return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+    }
 }
