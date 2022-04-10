@@ -13,7 +13,7 @@ public class AccountHolderController {
     @Autowired
     private AccountHolderService accountHolderService;
 
-    @GetMapping("/findAll")
+    @GetMapping("/findAllAccountHolders")
     public List<AccountHolderDTO> findAll() {
         return accountHolderService.findAll();
     }

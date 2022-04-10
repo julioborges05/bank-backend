@@ -17,9 +17,15 @@
 7-  
 create table account_holder(  
     id serial primary key,  
-    name varchar(50) not null,  
+    name varchar(200) not null,  
     cpf varchar(11) not null,  
     birthday date not null,  
-    primary key (id),  
     unique (cpf)  
+);
+
+8-  
+create table agency(  
+    id serial primary key,  
+    name varchar(200) not null,  
+    address varchar(500) not null  
 );
