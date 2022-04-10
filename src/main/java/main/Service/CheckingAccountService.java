@@ -126,7 +126,13 @@ public class CheckingAccountService {
     }
 
     public CheckingAccountDTO disableCheckingAccount(Integer agencyId, Integer checkingAccountId) {
-        if(ObjectUtils.isEmpty(checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId))) return null;
+        CheckingAccountDTO checkingAccountDTO = checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+        if(ObjectUtils.isEmpty(checkingAccountDTO)) return null;
+
+        if(checkingAccountDTO.getIsActive().equals("F")) {
+            checkingAccountDTO.setIsActive("Already disabled");
+            return checkingAccountDTO;
+        }
 
         checkingAccountDAO.updateExistentCheckingAccountIsActiveByCheckingAccountIdAndAgencyId(checkingAccountId, agencyId, "F");
 

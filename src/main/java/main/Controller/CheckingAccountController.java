@@ -132,7 +132,10 @@ public class CheckingAccountController {
                     checkingAccountListRequest.getId());
 
             if (ObjectUtils.isEmpty(checkingAccountDTO) || ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO().getId()))
-                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+
+            if(checkingAccountDTO.getIsActive().equals("Already disabled"))
+                return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
 
             return new ResponseEntity<>(checkingAccountDTO, HttpStatus.OK);
         } catch (Exception e) {
