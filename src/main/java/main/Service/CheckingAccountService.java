@@ -124,4 +124,12 @@ public class CheckingAccountService {
 
         return accountHolderMap;
     }
+
+    public CheckingAccountDTO disableCheckingAccount(Integer agencyId, Integer checkingAccountId) {
+        if(ObjectUtils.isEmpty(checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId))) return null;
+
+        checkingAccountDAO.updateExistentCheckingAccountIsActiveByCheckingAccountIdAndAgencyId(checkingAccountId, agencyId, "F");
+
+        return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+    }
 }

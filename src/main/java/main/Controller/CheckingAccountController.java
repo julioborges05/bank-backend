@@ -24,7 +24,8 @@ public class CheckingAccountController {
 
     @PostMapping("/create")
     public ResponseEntity<CheckingAccountDTO> createCheckingAccount(
-            @RequestBody CheckingAccountDTO checkingAccountRequest) {
+            @RequestBody CheckingAccountDTO checkingAccountRequest
+    ) {
 
         CheckingAccountDTO checkingAccountDTO;
         try {
@@ -41,7 +42,8 @@ public class CheckingAccountController {
 
     @GetMapping("/getBalance")
     public ResponseEntity<Double> getBalance(
-            @RequestBody CheckingAccountDTO checkingAccountRequest) {
+            @RequestBody CheckingAccountDTO checkingAccountRequest
+    ) {
 
         CheckingAccountDTO checkingAccountDTO;
         try {
@@ -59,7 +61,8 @@ public class CheckingAccountController {
 
     @PostMapping("/withdrawal/{value}")
     public ResponseEntity<Double> makeWithdrawal(
-            @PathVariable Double value, @RequestBody CheckingAccountDTO checkingAccountRequest) {
+            @PathVariable Double value, @RequestBody CheckingAccountDTO checkingAccountRequest
+    ) {
 
         CheckingAccountDTO checkingAccountDTO;
         try {
@@ -82,7 +85,8 @@ public class CheckingAccountController {
     public ResponseEntity<Double> makeTransference(
             @RequestParam(name = "originId", required = true) Integer originId,
             @RequestParam(name = "value", required = true) Double value,
-            @RequestBody List<CheckingAccountDTO> checkingAccountListRequest) {
+            @RequestBody List<CheckingAccountDTO> checkingAccountListRequest
+    ) {
 
         CheckingAccountDTO checkingAccountDTO;
         try {
@@ -102,7 +106,8 @@ public class CheckingAccountController {
 
     @GetMapping("/{cpf}")
     public ResponseEntity<Map<String, List<CheckingAccountDTO>>> findDataByCpf(
-            @PathVariable String cpf) {
+            @PathVariable String cpf
+    ) {
 
         Map<String, List<CheckingAccountDTO>> informationMap;
         try {
@@ -112,6 +117,24 @@ public class CheckingAccountController {
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
             return new ResponseEntity<>(informationMap, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/disableCheckingAccount")
+    public ResponseEntity<CheckingAccountDTO> disableCheckingAccount(
+            @RequestBody CheckingAccountDTO checkingAccountListRequest
+    ) {
+        CheckingAccountDTO checkingAccountDTO;
+        try {
+            checkingAccountDTO = checkingAccountService.disableCheckingAccount(checkingAccountListRequest.getAgencyDTO().getId(),
+                    checkingAccountListRequest.getId());
+
+            if (ObjectUtils.isEmpty(checkingAccountDTO) || ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO().getId()))
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
+            return new ResponseEntity<>(checkingAccountDTO, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
