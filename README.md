@@ -29,3 +29,15 @@ create table agency(
     name varchar(200) not null,  
     address varchar(500) not null  
 );
+
+9-  
+create table checking_account(  
+    id serial primary key,  
+    id_account_holder int,  
+    id_agency int,  
+    account_limit float,  
+    balance float,  
+    is_active char(1),  
+    foreign  key(id_account_holder) references account_holder(id),  
+    foreign  key(id_agency) references agency(id)  
+);
