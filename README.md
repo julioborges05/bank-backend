@@ -1,43 +1,101 @@
-# bank-backend
+# Bank API
 
 ## Steps to replicate the environment
 
-1- Create a docker container with this command on the terminal < docker run --name bank-database -p 5432:5432 -e POSTGRES_PASSWORD=1234 -d postgres >
+1 - On the DatabaseInstructions.md have the steps to create and insert the default datas on the database.
 
-2- docker exec -it bank-database /bin/bash
+2 - After create and insert the default datas, run this application on the src/main/java/main/App.java
 
-3- psql postgres postgres
+3 - It is recommended to use the postman app to use all the endpoints.
 
-4- create database bank;
+## Endpoints
 
-5- ctrl + d
+1 - Create checking account
 
-6- psql bank postgres;
+URL: `http://localhost:8080/checkingAccount/create`
 
-7-  
-create table account_holder(  
-    id serial primary key,  
-    name varchar(200) not null,  
-    cpf varchar(11) not null,  
-    birthday date not null,  
-    unique (cpf)  
-);
+BodyRequest:
+>{  
+>"accountHolderDTO": {  
+>"name": "Edu",  
+>"cpf": "987654",  
+>"birthDay": "2000-07-17"  
+>},  
+>"agencyDTO": {  
+>"id": 2  
+>},  
+>"limit": 0.0,  
+>"balance": 1000.0,  
+>"isActive": "T"  
+>}
 
-8-  
-create table agency(  
-    id serial primary key,  
-    name varchar(200) not null,  
-    address varchar(500) not null  
-);
+2 - Get balance account
 
-9-  
-create table checking_account(  
-    id serial primary key,  
-    id_account_holder int,  
-    id_agency int,  
-    account_limit float,  
-    balance float,  
-    is_active char(1),  
-    foreign  key(id_account_holder) references account_holder(id),  
-    foreign  key(id_agency) references agency(id)  
-);
+URL: `http://localhost:8080/checkingAccount/getBalance`
+
+BodyRequest:
+>{  
+>"id": 10,  
+>"agencyDTO": {  
+>"id": 2  
+>}  
+>}
+
+3 - Make deposit
+
+URL `http://localhost:8080/checkingAccount/deposit/100`
+
+BodyRequest:
+>{  
+>"id": 10,  
+>"agencyDTO": {  
+>"id": 2  
+>}  
+>}
+
+4 - Make withdrawal
+
+URL `http://localhost:8080/checkingAccount/withdrawal/100`
+
+BodyRequest:
+>{  
+>"id": 10,  
+>"agencyDTO": {  
+>"id": 2  
+>}  
+>}
+
+5 - Make transference
+
+(Change the originId and value in the URL)
+URL `http://localhost:8080/checkingAccount/transference?originId=10&value=100.0`
+
+BodyRequest:
+>[{  
+>"id": 10,  
+>"agencyDTO": {  
+>"id": 2  
+>}  
+>},{  
+>"id": 11,  
+>"agencyDTO": {  
+>"id": 1  
+>}  
+>}]
+
+6 - Find account holder information
+
+(You can change the URl to change the cpf)
+URL `http://localhost:8080/checkingAccount/654321`
+
+7 - Disable account
+
+URL `http://localhost:8080/checkingAccount/disableCheckingAccount`
+
+RequestBody
+>{  
+>"id": 10,  
+>"agencyDTO": {  
+>"id": 2  
+>}  
+>}

@@ -59,6 +59,28 @@ public class CheckingAccountController {
         }
     }
 
+    @PostMapping("/deposit/{value}")
+    public ResponseEntity<Double> deposit(
+            @PathVariable Double value, @RequestBody CheckingAccountDTO checkingAccountRequest
+    ) {
+
+        CheckingAccountDTO checkingAccountDTO;
+        try {
+            checkingAccountDTO = checkingAccountService.deposit(checkingAccountRequest.getAgencyDTO().getId(),
+                    checkingAccountRequest.getId(), value);
+
+            if(value <= 0 || checkingAccountDTO.getBalance() < checkingAccountDTO.getLimit() * (-1))
+                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+
+            if (ObjectUtils.isEmpty(checkingAccountDTO) || ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO().getId()))
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+
+            return new ResponseEntity<>(checkingAccountDTO.getBalance(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/withdrawal/{value}")
     public ResponseEntity<Double> makeWithdrawal(
             @PathVariable Double value, @RequestBody CheckingAccountDTO checkingAccountRequest
@@ -68,9 +90,6 @@ public class CheckingAccountController {
         try {
             checkingAccountDTO = checkingAccountService.makeWithdrawal(checkingAccountRequest.getAgencyDTO().getId(),
                     checkingAccountRequest.getId(), value);
-
-            if(value <= 0 || checkingAccountDTO.getBalance() < checkingAccountDTO.getLimit() * (-1))
-                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
 
             if (ObjectUtils.isEmpty(checkingAccountDTO) || ObjectUtils.isEmpty(checkingAccountDTO.getAgencyDTO().getId()))
                 return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);

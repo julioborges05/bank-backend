@@ -138,4 +138,15 @@ public class CheckingAccountService {
 
         return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
     }
+
+    public CheckingAccountDTO deposit(Integer agencyId, Integer checkingAccountId, Double value) {
+        CheckingAccountDTO databaseCheckingAccount = checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+
+        if(ObjectUtils.isEmpty(databaseCheckingAccount))
+            return null;
+
+        checkingAccountDAO.updateExistentCheckingAccountBalanceByCheckingAccountIdAndAgencyId(checkingAccountId, agencyId, databaseCheckingAccount.getBalance() + value);
+
+        return checkingAccountDAO.findByAgencyIdAndCheckingAccountId(agencyId, checkingAccountId);
+    }
 }
